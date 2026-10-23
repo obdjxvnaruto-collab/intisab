@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F7F3EA">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>انتساب | INTISAB</title>
+<style>
+:root{--cream:#F7F3EA;--blue:#2878D4;--blue-light:#DCEBFA;--navy:#192D46;--muted:#748398;--white:#FFF}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:"Noto Sans Arabic",Tahoma,sans-serif;background:var(--cream);color:var(--navy)}
+header{padding:30px 22px 22px;background:linear-gradient(140deg,#E1EDFA,#F7F3EA 75%);border-radius:0 0 30px 30px}
+.topline{display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:12px}
+.logo{width:54px;height:54px;display:grid;place-items:center;background:var(--blue);color:white;border-radius:18px;font-size:29px;box-shadow:0 7px 18px #2878D433}
+h1{margin:0;font-size:25px;letter-spacing:.5px}.subtitle{color:var(--muted);font-size:12px;margin-top:4px}
+.date{margin-top:27px;font-size:14px;color:var(--muted)}.welcome{font-size:24px;font-weight:bold;margin-top:8px}
+main{padding:22px}.section-title{font-size:18px;font-weight:bold;margin-bottom:15px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.tile{min-height:154px;border:1px solid #E5EAF0;background:var(--white);border-radius:23px;padding:18px 15px;text-align:right;cursor:pointer;color:var(--navy);box-shadow:0 5px 16px #20395708;transition:transform .15s;font-family:inherit;width:100%}
+.tile:active{transform:scale(.97)}.tile-icon{width:49px;height:49px;display:grid;place-items:center;border-radius:16px;background:var(--blue-light);font-size:25px;margin-bottom:14px}
+.tile h2{font-size:16px;margin:0 0 7px}.tile p{font-size:12px;color:var(--muted);margin:0;line-height:1.7}
+.progress{margin-top:24px;padding:18px;border-radius:21px;background:var(--navy);color:white}.progress-row{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.progress small{color:#D1DCE9}.track{height:7px;background:#FFFFFF25;border-radius:20px;overflow:hidden;margin-top:14px}
+.track span{display:block;width:0%;height:100%;background:#8FC5FF;border-radius:20px;transition:width .25s}
+footer{text-align:center;padding:22px 10px 30px;font-size:11px;color:var(--muted)}
+.page{display:none;opacity:0;transform:translateY(8px)}.page.active{display:block;animation:pageEnter .24s ease-out both}.page.leaving{display:block;position:absolute;inset:0;pointer-events:none;animation:pageExit .14s ease-in both}@keyframes pageEnter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}@keyframes pageExit{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-4px)}}@media(prefers-reduced-motion:reduce){.page.active,.page.leaving{animation:none}}
+.back-button{border:0;border-radius:14px;padding:11px 15px;background:var(--blue-light);color:var(--navy);font:inherit;cursor:pointer;margin-bottom:18px}
+.subject-list{display:grid;gap:12px}.subject{background:white;border:1px solid #E5EAF0;border-radius:18px;padding:16px}
+.subject-head{display:flex;align-items:center;gap:12px}.subject-emoji{display:grid;place-items:center;width:46px;height:46px;flex-shrink:0;background:var(--blue-light);border-radius:14px;font-size:23px}
+.subject h3{margin:0 0 4px;font-size:16px}.subject p{margin:0;font-size:12px;color:var(--muted);line-height:1.7}
+.subject a,.subject-action{display:inline-block;margin-top:12px;background:var(--blue);color:white;text-decoration:none;border:0;border-radius:12px;padding:11px 13px;font-size:13px;font-family:inherit;cursor:pointer;transition:transform .18s ease,filter .18s ease}
+.subject-action:active,.subject a:active{transform:scale(.97);filter:brightness(.95)}
+.chapter-card{background:#fff;border:1px solid #E5EAF0;border-radius:19px;padding:16px;margin-bottom:12px;box-shadow:0 5px 16px #20395706}
+.chapter-top{display:flex;align-items:center;gap:12px}
+.chapter-number{width:43px;height:43px;display:grid;place-items:center;border-radius:14px;background:var(--blue-light);color:var(--navy);font-weight:800;flex-shrink:0}
+.chapter-card h3{font-size:15px;margin:0 0 5px}.chapter-card p{font-size:12px;color:var(--muted);line-height:1.8;margin:0}
+.chapter-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.chapter-links a{margin:0;font-size:12px;padding:10px 11px}
+.chapter-note{font-size:12px;line-height:1.9;color:var(--muted);margin-top:10px}
+.lesson-list{display:grid;gap:10px;margin-top:12px}.lesson-row{display:flex;align-items:center;gap:12px;padding:13px;background:#fff;border:1px solid #E5EAF0;border-radius:15px}.lesson-row .lesson-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:var(--blue-light);font-size:20px;flex-shrink:0}.lesson-row .lesson-meta{flex:1;min-width:0}.lesson-row strong{font-size:13px;display:block;line-height:1.6}.lesson-row small{font-size:11px;color:var(--muted);display:block;margin-top:3px}.lesson-row button{border:0;background:var(--blue);color:#fff;border-radius:11px;padding:10px 12px;font:inherit;font-size:12px;cursor:pointer;white-space:nowrap}.chapter-select{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.chapter-select button{background:#fff;border:1px solid #E5EAF0;border-radius:16px;padding:15px;text-align:right;font:inherit;color:var(--navy);cursor:pointer}.chapter-select strong{display:block;font-size:14px}.chapter-select small{display:block;color:var(--muted);font-size:11px;margin-top:5px}.info-note{background:var(--blue-light);border-radius:16px;padding:14px;font-size:13px;line-height:1.8;margin:0 0 16px}
+.simple-card{background:white;border:1px solid #E5EAF0;border-radius:18px;padding:16px;margin-bottom:12px}
+.simple-card h3{margin:0 0 8px;font-size:16px}.simple-card p{margin:0;font-size:13px;line-height:1.8;color:var(--muted)}
+@media(max-width:360px){header{padding:24px 16px 20px}main{padding:17px}.grid{gap:10px}.tile{padding:15px 12px}}
+
+.player-title{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #E4EAF1;border-radius:16px;padding:13px;margin-bottom:12px}
+.player-live-dot{width:10px;height:10px;border-radius:50%;background:#2878D4;box-shadow:0 0 0 5px #2878D418;flex-shrink:0}
+.player-title strong{display:block;font-size:14px}.player-title small{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+.video-frame{background:#07111F;border-radius:20px;overflow:hidden;box-shadow:0 10px 28px #102A451A;aspect-ratio:16/9;width:100%}
+#youtubePlayer{width:100%;height:100%;min-height:190px}#youtubePlayer iframe{width:100%;height:100%;border:0;display:block}
+.player-controls{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:8px;margin-top:12px}
+.player-controls button,.player-tools>button,.speed-menu button{border:1px solid #DCE6F0;border-radius:13px;background:#fff;color:var(--navy);font-family:inherit;font-weight:700;font-size:12px;padding:12px 7px;cursor:pointer}
+.player-controls .play-control{background:var(--blue);color:#fff;border-color:var(--blue)}
+.player-tools{display:flex;gap:9px;flex-wrap:wrap;margin-top:10px;position:relative}
+.player-tools>button{flex:1;min-width:130px}
+.player-tools .star-help{background:linear-gradient(135deg,#FFF7DA,#F5E6A7);border-color:#E9D68C;color:#624B0A}
+.speed-menu{display:flex;gap:6px;flex-wrap:wrap;width:100%;padding:8px;background:#fff;border:1px solid #E5EAF0;border-radius:14px}
+.hidden{display:none!important}
+.player-note{font-size:11px;line-height:1.8;color:var(--muted);margin:11px 2px 17px}
+.help-panel{background:#fff;border:1px solid #E8DCA8;border-radius:20px;padding:15px;box-shadow:0 8px 24px #A58A2512;margin-top:12px}
+.help-heading{display:flex;align-items:center;gap:10px;margin-bottom:12px}.star-icon{display:grid;place-items:center;width:42px;height:42px;border-radius:15px;background:#FFF3C4;color:#8B6811;font-size:23px}
+.help-heading h3{font-size:15px;margin:0 0 4px}.help-heading p{font-size:11px;color:var(--muted);margin:0}.close-help{margin-right:auto;border:0;background:#F2F4F7;border-radius:10px;width:31px;height:31px;cursor:pointer}
+#helpQuestion{width:100%;resize:vertical;border:1px solid #DCE4ED;border-radius:13px;padding:12px;font-family:inherit;font-size:13px;line-height:1.8;outline-color:var(--blue)}
+.ask-help-button{width:100%;margin-top:9px;border:0;border-radius:13px;padding:12px;background:var(--navy);color:#fff;font-family:inherit;font-weight:700;cursor:pointer}
+.help-answer{margin-top:12px;padding:12px;background:#F3F8FE;border:1px solid #DCEBFA;border-radius:13px;font-size:13px;line-height:1.9;white-space:pre-wrap}
+.ai-notice{font-size:10px;line-height:1.8;color:var(--muted);margin:10px 1px 0}
+
+/* INTISAB cinematic intro */
+#introOverlay{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0;overflow:hidden;background:radial-gradient(ellipse at 50% 42%,#ffffff 0%,#fbf8f0 58%,#f3efe5 100%);color:#16365a;transition:opacity .85s ease,visibility .85s ease}
+#introOverlay::before{content:"";position:absolute;width:280px;height:280px;border-radius:50%;background:#54baff24;filter:blur(48px);animation:introAura 3s ease-in-out infinite alternate}
+#introOverlay.intro-hidden{opacity:0;visibility:hidden;pointer-events:none}
+#introStage{position:relative;width:150px;height:150px;display:grid;place-items:center;perspective:600px}
+#introBall{position:absolute;width:72px;height:72px;border-radius:50%;display:block;font-size:0;background:radial-gradient(circle at 31% 25%,#e4f8ff 0%,#8bdcff 18%,#35aaff 43%,#0877e8 72%,#0756b8 100%);box-shadow:0 0 18px #28a6ff85,0 0 48px #35aaff4f,inset -5px -8px 13px #064a9c42,inset 4px 4px 9px #ffffffa8;animation:ballFloat 1.65s ease-in-out infinite;user-select:none;z-index:2}
+#introBall::after{content:"";position:absolute;inset:-10px;border:1px solid #58baff70;border-radius:50%;animation:ballRing 2s ease-out infinite}
+#introLogo{width:94px;height:94px;display:grid;place-items:center;border-radius:28px;background:linear-gradient(145deg,#eaf9ff,#a7dcff 35%,#329cff 68%,#0871dc);font-size:49px;box-shadow:0 9px 28px #1688df30,0 0 34px #55baff65,inset 0 2px 5px #ffffffd9;opacity:0;transform:scale(.35) rotate(-22deg);z-index:1}
+#introOverlay.intro-running #introBall{animation:ballCompress .72s cubic-bezier(.2,.8,.2,1) forwards;pointer-events:none}
+#introOverlay.intro-running #introLogo{animation:logoForm .9s .48s cubic-bezier(.16,1,.3,1) forwards}
+#introTitle{margin-top:20px;font-family:Tahoma,sans-serif;font-weight:900;font-size:clamp(31px,9vw,43px);letter-spacing:5px;color:transparent;background:linear-gradient(110deg,#3377b9 0%,#a9e1ff 20%,#ffffff 34%,#1688e8 49%,#d8f3ff 62%,#3e8bd0 78%,#e8f9ff 100%);background-size:230% auto;background-clip:text;-webkit-background-clip:text;text-shadow:0 2px 18px #1688e81c;opacity:0;transform:translateY(13px);position:relative}
+#introOverlay.intro-running #introTitle{animation:titleReveal .85s 1.05s cubic-bezier(.16,1,.3,1) forwards,diamondShine 2.2s 1.6s linear infinite}
+#introTagline{font-size:12px;color:#54799d;letter-spacing:1.4px;margin-top:8px;opacity:0;transform:translateY(7px)}
+#introOverlay.intro-running #introTagline{animation:titleReveal .7s 1.38s ease forwards}
+#introHint{display:none}
+@keyframes ballFloat{0%,100%{transform:translateY(0) rotate(-7deg)}50%{transform:translateY(-9px) rotate(8deg)}}
+@keyframes ballRing{0%{transform:scale(.82);opacity:.7}100%{transform:scale(1.45);opacity:0}}
+@keyframes ballCompress{0%{opacity:1;transform:scale(1) rotate(0)}55%{opacity:1;transform:scale(1.15) rotate(100deg)}100%{opacity:0;transform:scale(.12) rotate(230deg)}}
+@keyframes logoForm{0%{opacity:0;transform:scale(.3) rotate(-22deg);border-radius:50%}65%{opacity:1;transform:scale(1.12) rotate(4deg);border-radius:25px}100%{opacity:1;transform:scale(1) rotate(0);border-radius:28px}}
+@keyframes titleReveal{to{opacity:1;transform:translateY(0)}}
+@keyframes diamondShine{0%{background-position:100% center}100%{background-position:-130% center}}
+@keyframes introAura{from{transform:scale(.8);opacity:.55}to{transform:scale(1.25);opacity:1}}
+@keyframes hintPulse{0%,100%{opacity:.45}50%{opacity:1}}
+@media(prefers-reduced-motion:reduce){#introOverlay *,#introOverlay::before{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+
+</style>
+</head>
+<body>
+<div id="introOverlay" aria-label="انتساب">
+ <div id="introStage"><div id="introBall" aria-hidden="true"></div><div id="introLogo" aria-hidden="true">🎓</div></div>
+ <div id="introTitle">INTISAB</div><div id="introTagline">رحلتك نحو التفوق</div><div id="introHint" aria-hidden="true"></div>
+</div>
+
+<header>
+ <div class="topline"><div class="brand"><div class="logo">🎓</div><div><h1>انتساب</h1><div class="subtitle">INTISAB · رحلتك نحو التفوق</div></div></div><div style="font-size:25px" aria-hidden="true">💎</div></div>
+ <div class="date" id="today"></div><div class="welcome">كل يوم يقربك من هدفك.</div><div class="subtitle">خطوة صغيرة اليوم، إنجاز كبير باچر.</div>
+</header>
+<main>
+<section id="homePage" class="page active">
+ <div class="section-title">مساحتك الدراسية</div><div class="grid">
+  <button class="tile" onclick="openSection('lectures')"><div class="tile-icon">▶️</div><h2>المحاضرات</h2><p>موادك ومدرسوك ومحاضراتك.</p></button>
+  <button class="tile" onclick="openSection('schedule')"><div class="tile-icon">🗓️</div><h2>الجداول</h2><p>خطتك اليومية ومتابعة مهامك.</p></button>
+  <button class="tile" onclick="openSection('challenge')"><div class="tile-icon">🎯</div><h2>التحدّي</h2><p>اختبر فهمك وتابع أخطاءك.</p></button>
+  <button class="tile" onclick="openSection('achievement')"><div class="tile-icon">🏆</div><h2>الإنجاز</h2><p>تابع تقدمك وسجل إنجازاتك.</p></button>
+ </div>
+ <div class="progress"><div class="progress-row"><strong>رحلة الإنجاز</strong><small id="progressText">0% مكتمل</small></div><div class="track"><span id="progressBar"></span></div><p style="font-size:12px;line-height:1.8;margin-bottom:0">كل محاضرة تكملها هي خطوة أقرب إلى هدفك.</p></div>
+</section>
+<section id="lecturesPage" class="page">
+ <button class="back-button" onclick="goHome()">← الرجوع للرئيسية</button><div class="section-title">محاضرات السادس العلمي</div>
+ <p class="info-note">اختَر المادة، ثم الفصل. اختَر المادة ثم الفصل، وتظهر المحاضرات داخل انتساب من دون الخروج إلى تطبيق آخر.</p><div class="subject-list">
+  <article class="subject"><div class="subject-head"><div class="subject-emoji">📐</div><div><h3>الرياضيات</h3><p>المدرس: حيدر عبد الأئمة</p></div></div><button class="subject-action" onclick="openSection('math')">📘 فتح فصول الرياضيات</button></article>
+  <article class="subject"><div class="subject-head"><div class="subject-emoji">🧬</div><div><h3>الأحياء</h3><p>المدرس: حسن فلاح</p></div></div><button class="subject-action" onclick="openSection('biology')">📘 فتح فصول الأحياء</button></article>
+  <article class="subject"><div class="subject-head"><div class="subject-emoji">🇬🇧</div><div><h3>اللغة الإنكليزية</h3><p>المدرس: محمد العبيدي</p></div></div><button class="subject-action" onclick="openSection('english')">📘 فتح فصول اللغة الإنكليزية</button></article>
+  <article class="subject"><div class="subject-head"><div class="subject-emoji">⚛️</div><div><h3>الفيزياء</h3><p>المدرس: حسين محمد</p></div></div><button class="subject-action" onclick="openSection('physics')">📘 فتح فصول الفيزياء</button></article>
+  <article class="subject"><div class="subject-head"><div class="subject-emoji">🧪</div><div><h3>الكيمياء</h3><p>المدرس: نور الدين الدليمي</p></div></div><button class="subject-action" onclick="openSection('chemistry')">📘 فتح فصول الكيمياء</button></article>
+  <article class="subject"><div class="subject-head"><div class="subject-emoji">📚</div><div><h3>اللغة العربية</h3><p>المدرس: هاشم المعموري</p></div></div><button class="subject-action" onclick="openSection('arabic')">📘 فتح فصول اللغة العربية</button></article>
+  <article class="subject"><div class="subject-head"><div class="subject-emoji">☪️</div><div><h3>التربية الإسلامية</h3><p>المدرس: مراجعة ذاتية</p></div></div><button class="subject-action" onclick="openSection('islamic')">📘 فتح فصول التربية الإسلامية</button></article>
+ </div>
+</section>
+<section id="mathPage" class="page">
+ <button class="back-button" onclick="openSection('lectures')">→ الرجوع للمواد</button>
+ <div class="section-title">📐 رياضيات السادس العلمي</div>
+ <p class="info-note">المدرس: حيدر عبد الأئمة · دفعة 2027. نبدأ بالفصل الأول، ونضيف روابط كل محاضرة بعد التحقق منها حتى ما تختلط عليك محاضرات الدفعات القديمة.</p>
+ <div class="chapter-card">
+  <div class="chapter-top"><div class="chapter-number">01</div><div><h3>الفصل الأول</h3><p>اعرض محاضرات الأستاذ الخاصة بهذا الفصل.</p></div></div>
+  <div class="chapter-links"><button class="subject-action" onclick="openCourseChapter('math',1)">▶️ محاضرات الفصل داخل انتساب</button></div>
+ </div>
+ <div class="chapter-card"><div class="chapter-top"><div class="chapter-number">02</div><div><h3>الفصل الثاني</h3><p>ابحث عن محاضرات الفصل الثاني للدفعة الحالية.</p></div></div>
+  <div class="chapter-links"><button class="subject-action" onclick="openCourseChapter('math',2)">▶️ محاضرات الفصل داخل انتساب</button></div>
+ </div>
+ <div class="chapter-card">
+  <div class="chapter-top"><div class="chapter-number">✍️</div><div><h3>حل الأسئلة والتدريب</h3><p>بعد كل محاضرة، دوّن أهم الأفكار وحل 3 إلى 5 أسئلة بنفسك.</p></div></div>
+  <div class="chapter-links">
+   <a href="https://t.me/hayderabdamaa11" target="_blank" rel="noopener">📣 قناة الأستاذ على تيليغرام</a>
+   <a href="https://www.youtube.com/results?search_query=حيدر+عبد+الأئمة+الأعداد+المركبة+أسئلة+وزارية+2027" target="_blank" rel="noopener">📝 أسئلة الفصل الأول</a>
+  </div>
+  <div class="chapter-note">نميّز الأسئلة الوزارية الأصلية عن التدريبية، وما نعتبر أي سؤال وزاري إلا إذا كان مصدره واضحاً.</div>
+ </div>
+ <div class="simple-card"><h3>📌 طريقة تسجيل إنجاز المحاضرة</h3><p>1. شاهد المحاضرة واكتب الملاحظات المهمة.<br>2. حل 3 إلى 5 أسئلة من دون النظر إلى الحل.<br>3. ارجع إلى «الجداول» وعلّم الرياضيات كمكتملة بعد ما تنهي المطلوب فعلاً.</p></div>
+</section>
+<section id="biologyPage" class="page">
+ <button class="back-button" onclick="openSection('lectures')">→ الرجوع للمواد</button>
+ <div class="section-title">🧬 الأحياء · السادس العلمي</div>
+ <p class="info-note">المدرس: حسن فلاح. اختَر الفصل ثم شاهد المحاضرات داخل مشغّل انتساب. أسماء الفصول التفصيلية تحتاج مطابقة مع المنهج الرسمي.</p>
+ <div class="chapter-card"><div class="chapter-top"><div class="chapter-number">01</div><div><h3>الفصل الأول</h3><p>محاضرات الفصل الأول من قائمة الفصل داخل التطبيق.</p></div></div>
+  <div class="chapter-links"><button class="subject-action" onclick="openCourseChapter('biology',1)">▶️ محاضرات الفصل داخل انتساب</button></div>
+ </div>
+ <div class="chapter-card"><div class="chapter-top"><div class="chapter-number">02</div><div><h3>الفصل الثاني</h3><p>محاضرات الفصل الثاني من قائمة الفصل داخل التطبيق.</p></div></div>
+  <div class="chapter-links"><button class="subject-action" onclick="openCourseChapter('biology',2)">▶️ محاضرات الفصل داخل انتساب</button></div>
+ </div>
+ <div class="simple-card"><h3>⭐ مساعدة الطالب</h3><p>بعد فتح المحاضرة، استخدم زر النجمة واكتب القانون أو الخطوة اللي ما فهمتها. المساعد حالياً واجهة تجريبية، وربط الذكاء الاصطناعي الفعلي مرحلة لاحقة.</p></div>
+</section>
+<section id="englishPage" class="page">
+ <button class="back-button" onclick="openSection('lectures')">→ الرجوع للمواد</button>
+ <div class="section-title">🇬🇧 اللغة الإنكليزية · السادس العلمي</div>
+ <p class="info-note">المدرس: محمد العبيدي. اختَر الفصل ثم شاهد المحاضرات داخل مشغّل انتساب. أسماء الفصول التفصيلية تحتاج مطابقة مع المنهج الرسمي.</p>
+ <div class="chapter-card"><div class="chapter-top"><div class="chapter-number">01</div><div><h3>الفصل الأول</h3><p>محاضرات الفصل الأول من قائمة الفصل داخل التطبيق.</p></div></div>
+  <div class="chapter-links"><button class="subject-action" onclick="openCourseChapter('english',1)">▶️ محاضرات الفصل داخل انتساب</button></div>
+ </div>
+ <div class="chapter-card"><div class="chapter-top"><div class="chapter-number">02</div><div><h3>الفصل الثاني</h3><p>محاضرات الفصل الثاني من قائمة الفصل داخل التطبيق.</p></div></div>
+  <div class="chapter-links"><button class="subject-action" onclick="openCourseChapter('english',2)">▶️ محاضرات الفصل داخل انتساب</button></div>
+ </div>
+ <div class="simple-card"><h3>⭐ مساعدة الطالب</h3><p>بعد فتح المحاضرة، استخدم زر النجمة واكتب القانون أو الخطوة اللي ما فهمتها. المساعد حالياً واجهة تجريبية، وربط الذكاء الاصطناعي الفعلي مرحلة لاحقة.</p></div>
+</section>
+<section id="physicsPage" class="page">
+ <button class="back-button" onclick="openSection('lectures')">→ الرجوع للمواد</button>
+ <div class="section-title">⚛️ الفيزياء · السادس العلمي</div>
+ <p class="info-note">المدرس: حسين محمد. اختَر الفصل ثم شاهد المحاضرات داخل مشغّل انتساب. أسماء الفصول التفصيلية تحتاج مطابقة مع المنهج الرسمي.</p>
+ <div class="chapter-card"><div class="chapter-top"><div class="chapter-number">01</div><div><h3>الفصل الأول</h3><p>محاضرات الفصل الأول من قائمة الفصل داخل التطبيق.</p></div></div>
+  <div class="chapter-links"><button class="subject-action" onclick="openCourseChapter('physics',1)">▶️ محاضرات الفصل داخل انتساب</button></div>
+ </div>
+ <div class="chapter-card"><div class="chapter-top"><div class="chapter-number">02</div><div><h3>الفصل الثاني</h3><p>محاضرات الفصل الثاني من قائمة الفصل داخل التطبيق.</p></div></div>
+  <div class="chapter-links"><button class="subject-action" onclick="openCourseChapter('physics',2)">▶️ محاضرات الفصل داخل انتساب</button></div>
+ </div>
+ <div class="simple-card"><h3>⭐ مساعدة الطالب</h3><p>بعد فتح المحاضرة، استخدم زر النجمة واكتب القانون أو الخطوة اللي ما فهمتها. المساعد حالياً واجهة تجريبية، وربط الذكاء الاصطناعي الفعلي مرحلة لاحقة.</p></div>
+</section>
+<section id="chemistryPage" class="page">
+ <button class="back-button" onclick="openSection('lectures')">→ الرجوع للمواد</button>
+ <div class="section-title">🧪 الكيمياء · السادس العلمي</div>
+ <p class="info-note">المدرس: نور الدين الدليمي. اختَر الفصل ثم شاهد المحاضرات داخل مشغّل انتساب. أسماء الفصول التفصيلية تحتاج مطابقة مع المنهج الرسمي.</p>
+ <div class="chapter-card"><div class="chapter-top"><div class="chapter-number">01</div><div><h3>الفصل الأول</h3><p>محاضرات الفصل الأول من قائمة الفصل داخل التطبيق.</p></div></div>
+  <div class="chapter-links"><button class="subject-action" onclick="openCourseChapter('chemistry',1)">▶️ محاضرات الفصل داخل انتساب</button></div>
+ </div>
+ <div class="chapter-card"><div class="chapter-top"><div class="chapter-number">02</div><div><h3>الفصل الثاني</h3><p>محاضرات الفصل الثاني من قائمة الفصل داخل التطبيق.</p></div></div>
+  <div class="chapter-links"><button class="subject-action" onclick="openCourseChapter('chemistry',2)">▶️ محاضرات الفصل داخل انتساب</button></div>
+ </div>
+ <div class="simple-card"><h3>⭐ مساعدة الطالب</h3><p>بعد فتح المحاضرة، استخدم زر النجمة واكتب القانون أو الخطوة اللي ما فهمتها. المساعد حالياً واجهة تجريبية، وربط الذكاء الاصطناعي الفعلي مرحلة لاحقة.</p></div>
+</section>
+<section id="arabicPage" class="page">
+ <button class="back-button" onclick="openSection('lectures')">→ الرجوع للمواد</button>
+ <div class="section-title">📚 اللغة العربية · السادس العلمي</div>
+ <p class="info-note">المدرس: هاشم المعموري. اختَر الفصل ثم شاهد المحاضرات داخل مشغّل انتساب. أسماء الفصول التفصيلية تحتاج مطابقة مع المنهج الرسمي.</p>
+ <div class="chapter-card"><div class="chapter-top"><div class="chapter-number">01</div><div><h3>الفصل الأول</h3><p>محاضرات الفصل الأول من قائمة الفصل داخل التطبيق.</p></div></div>
+  <div class="chapter-links"><button class="subject-action" onclick="openCourseChapter('arabic',1)">▶️ محاضرات الفصل داخل انتساب</button></div>
+ </div>
+ <div class="chapter-card"><div class="chapter-top"><div class="chapter-number">02</div><div><h3>الفصل الثاني</h3><p>محاضرات الفصل الثاني من قائمة الفصل داخل التطبيق.</p></div></div>
+  <div class="chapter-links"><button class="subject-action" onclick="openCourseChapter('arabic',2)">▶️ محاضرات الفصل داخل انتساب</button></div>
+ </div>
+ <div class="simple-card"><h3>⭐ مساعدة الطالب</h3><p>بعد فتح المحاضرة، استخدم زر النجمة واكتب القانون أو الخطوة اللي ما فهمتها. المساعد حالياً واجهة تجريبية، وربط الذكاء الاصطناعي الفعلي مرحلة لاحقة.</p></div>
+</section>
+<section id="islamicPage" class="page">
+ <button class="back-button" onclick="openSection('lectures')">→ الرجوع للمواد</button>
+ <div class="section-title">☪️ التربية الإسلامية · السادس العلمي</div>
+ <p class="info-note">المدرس: مراجعة ذاتية. اختَر الفصل ثم شاهد المحاضرات داخل مشغّل انتساب. أسماء الفصول التفصيلية تحتاج مطابقة مع المنهج الرسمي.</p>
+ <div class="chapter-card"><div class="chapter-top"><div class="chapter-number">01</div><div><h3>الفصل الأول</h3><p>محاضرات الفصل الأول من قائمة الفصل داخل التطبيق.</p></div></div>
+  <div class="chapter-links"><button class="subject-action" onclick="openCourseChapter('islamic',1)">▶️ محاضرات الفصل داخل انتساب</button></div>
+ </div>
+ <div class="chapter-card"><div class="chapter-top"><div class="chapter-number">02</div><div><h3>الفصل الثاني</h3><p>محاضرات الفصل الثاني من قائمة الفصل داخل التطبيق.</p></div></div>
+  <div class="chapter-links"><button class="subject-action" onclick="openCourseChapter('islamic',2)">▶️ محاضرات الفصل داخل انتساب</button></div>
+ </div>
+ <div class="simple-card"><h3>⭐ مساعدة الطالب</h3><p>بعد فتح المحاضرة، استخدم زر النجمة واكتب القانون أو الخطوة اللي ما فهمتها. المساعد حالياً واجهة تجريبية، وربط الذكاء الاصطناعي الفعلي مرحلة لاحقة.</p></div>
+</section>
+<section id="courseLibraryPage" class="page">
+ <button class="back-button" onclick="openSection(previousCourseSection)">→ الرجوع للفصول</button>
+ <div class="section-title" id="courseLibraryTitle">محاضرات الفصل</div>
+ <p class="info-note" id="courseLibraryNote">اختَر المحاضرة لتشغيلها داخل التطبيق.</p>
+ <div id="courseLessonList" class="lesson-list"></div>
+</section>
+<section id="playerPage" class="page">
+ <button class="back-button" onclick="openSection(previousCourseSection)">→ الرجوع للمادة</button>
+ <div class="section-title">🎬 مشغّل المحاضرة</div>
+ <div class="player-title"><span class="player-live-dot"></span><div><strong id="playerLectureTitle">رياضيات السادس العلمي · الفصل الأول</strong><small id="playerTeacher">حيدر عبد الأئمة</small></div></div>
+ <div class="video-frame"><div id="youtubePlayer"></div></div>
+ <div class="player-controls">
+  <button onclick="seekLecture(-10)" aria-label="رجوع عشر ثواني">↶ 10 ث</button>
+  <button class="play-control" onclick="toggleLecturePlayback()" id="playPauseButton">⏸ إيقاف مؤقت</button>
+  <button onclick="seekLecture(10)" aria-label="تقديم عشر ثواني">10 ث ↷</button>
+ </div>
+ <div class="player-tools">
+  <button onclick="toggleSpeedMenu()">⏩ سرعة التشغيل</button>
+  <div id="speedMenu" class="speed-menu hidden">
+   <button onclick="setLectureSpeed(0.75)">0.75×</button><button onclick="setLectureSpeed(1)">1×</button><button onclick="setLectureSpeed(1.25)">1.25×</button><button onclick="setLectureSpeed(1.5)">1.5×</button><button onclick="setLectureSpeed(2)">2×</button>
+  </div>
+  <button class="star-help" onclick="toggleHelpPanel()">⭐ مساعدة الطالب</button>
+ </div>
+ <p class="player-note">تقدر تستخدم أدوات يوتيوب داخل الفيديو. بعض خيارات السرعة تعتمد على دعم الفيديو نفسه.</p>
+ <div id="helpPanel" class="help-panel hidden">
+  <div class="help-heading"><span class="star-icon">✦</span><div><h3>مساعد انتساب الذكي</h3><p>اكتب الخطوة أو القانون اللي ما فهمته.</p></div><button class="close-help" onclick="toggleHelpPanel()">✕</button></div>
+  <textarea id="helpQuestion" rows="3" placeholder="مثلاً: ليش نستخدم المرافق هنا؟ أو اشرحلي هاي الخطوة..."></textarea>
+  <button class="ask-help-button" onclick="askStudyHelp()">اشرحلي ⭐</button>
+  <div id="helpAnswer" class="help-answer hidden"></div>
+  <p class="ai-notice">ملاحظة: واجهة المساعد جاهزة، لكن ربطها بذكاء اصطناعي حقيقي يحتاج خدمة آمنة واتصالاً بالإنترنت. حالياً ستظهر رسالة توضيحية، ولن ندّعي أن الرد من AI قبل ربطه فعلياً.</p>
+ </div>
+</section>
+<section id="schedulePage" class="page"><button class="back-button" onclick="goHome()">← الرجوع للرئيسية</button><div class="section-title">جدول اليوم</div><p class="info-note">هذا نموذج أولي. علّم المادة كمكتملة بعد إنهائها، وسيُحفظ التقدم على الجهاز إذا كان التخزين المحلي متاحاً.</p><div id="scheduleList"></div></section>
+<section id="challengePage" class="page"><button class="back-button" onclick="goHome()">← الرجوع للرئيسية</button><div class="section-title">التحدّي الدراسي</div><p class="info-note">هذه واجهة أولية. سنضيف بنك الأسئلة لاحقاً، مع التمييز بين الأسئلة الوزارية الأصلية والتدريبية وعدم نسبة سؤال للوزارة بلا مصدر موثوق.</p><div class="simple-card"><h3>📝 تحدّي اليوم</h3><p>راجع موضوعاً درسته واكتب اسم المادة والموضوع في سجل إنجازك. بنك الأسئلة والتصحيح الذكي يحتاجان مرحلة تطوير لاحقة.</p></div></section>
+<section id="achievementPage" class="page"><button class="back-button" onclick="goHome()">← الرجوع للرئيسية</button><div class="section-title">سجل الإنجاز</div><div class="simple-card"><h3>إنجازاتك المحفوظة</h3><p id="achievementText">بعد إكمال مهام الجدول ستظهر هنا نسبة التقدم.</p></div><div class="simple-card"><h3>💾 معاينة صورة حل</h3><p>اختر صورة من جهازك لمعاينتها. هذه النسخة لا ترفع الصور إلى الإنترنت ولا تحفظها بشكل دائم.</p><input id="solutionImage" type="file" accept="image/*"><div id="imagePreview" style="margin-top:12px"></div></div></section>
+</main>
+<footer>INTISAB · صُمّم لرحلتك الدراسية 💎</footer>
+<script>
+
+let intisabIntroStarted=false;
+function startIntisabIntro(){
+ const intro=document.getElementById('introOverlay');
+ if(!intro||intisabIntroStarted)return;
+ intisabIntroStarted=true;
+ intro.classList.add('intro-running');
+ window.setTimeout(()=>intro.classList.add('intro-hidden'),3000);
+ window.setTimeout(()=>{if(intro&&intro.parentNode)intro.parentNode.removeChild(intro);},3900);
+}
+// يبدأ الانترو تلقائياً عند فتح التطبيق، دون الحاجة إلى لمس الكرة.
+window.addEventListener('DOMContentLoaded',()=>window.setTimeout(startIntisabIntro,350),{once:true});
+
+const pageIds={home:"homePage",lectures:"lecturesPage",math:"mathPage",biology:"biologyPage",english:"englishPage",physics:"physicsPage",chemistry:"chemistryPage",arabic:"arabicPage",islamic:"islamicPage",player:"playerPage",courseLibrary:"courseLibraryPage",schedule:"schedulePage",challenge:"challengePage",achievement:"achievementPage"};
+let previousCourseSection="math";
+let currentSection="home";
+let navigationBusy=false;
+function openSection(section){
+  const targetId=pageIds[section];
+  if(!targetId||navigationBusy||section===currentSection)return;
+  const current=document.getElementById(pageIds[currentSection]);
+  const target=document.getElementById(targetId);
+  if(!current||!target)return;
+  navigationBusy=true;
+  current.classList.remove("active");
+  current.classList.add("leaving");
+  target.classList.add("active");
+  currentSection=section;
+  if(section==="schedule")renderSchedule();
+  if(section==="achievement")renderAchievement();
+  window.scrollTo({top:0,behavior:"smooth"});
+  window.setTimeout(()=>{
+    current.classList.remove("leaving");
+    navigationBusy=false;
+  },180);
+}
+function goHome(){openSection("home");}
+document.getElementById("today").textContent=new Intl.DateTimeFormat("ar-IQ",{weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(new Date());
+const scheduleTasks=[
+{id:"math",subject:"الرياضيات",task:"درس جديد + حل 3 أسئلة"},
+{id:"biology",subject:"الأحياء",task:"فهم موضوع وتلخيص المهم"},
+{id:"english",subject:"الإنكليزي",task:"قواعد أو قطعة + تدريب"},
+{id:"physics",subject:"الفيزياء",task:"فهم القانون وحل مسائل"},
+{id:"chemistry",subject:"الكيمياء",task:"فهم موضوع وحل أسئلة"},
+{id:"arabic",subject:"العربي",task:"قواعد أو أدب حسب الخطة"},
+{id:"islamic",subject:"الإسلامية",task:"مراجعة فقرة وحفظ المهم"}];
+function getCompletedTasks(){try{return JSON.parse(localStorage.getItem("intisabCompletedTasks")||"[]");}catch(e){return [];}}
+function saveCompletedTasks(ids){try{localStorage.setItem("intisabCompletedTasks",JSON.stringify(ids));}catch(e){}}
+function renderSchedule(){const done=getCompletedTasks(),list=document.getElementById("scheduleList");list.innerHTML="";scheduleTasks.forEach(task=>{const label=document.createElement("label");label.className="simple-card";label.style.display="flex";label.style.alignItems="flex-start";label.style.gap="10px";label.style.cursor="pointer";const checkbox=document.createElement("input");checkbox.type="checkbox";checkbox.checked=done.includes(task.id);checkbox.style.marginTop="5px";checkbox.addEventListener("change",()=>{const old=getCompletedTasks();const next=checkbox.checked?[...new Set([...old,task.id])]:old.filter(id=>id!==task.id);saveCompletedTasks(next);updateProgress();});const wrap=document.createElement("span"),title=document.createElement("strong"),desc=document.createElement("p");title.textContent=task.subject;desc.style.margin="6px 0 0";desc.style.color="var(--muted)";desc.style.fontSize="13px";desc.textContent=task.task;wrap.append(title,desc);label.append(checkbox,wrap);list.appendChild(label);});}
+function updateProgress(){const count=getCompletedTasks().length,percent=Math.round(count/scheduleTasks.length*100);document.getElementById("progressText").textContent=percent+"% مكتمل";document.getElementById("progressBar").style.width=percent+"%";document.getElementById("achievementText").textContent="أنجزت "+count+" من "+scheduleTasks.length+" مهام في الجدول. نسبة إنجاز الجدول: "+percent+"%.";}
+function renderAchievement(){updateProgress();}
+document.getElementById("solutionImage").addEventListener("change",event=>{const preview=document.getElementById("imagePreview");preview.innerHTML="";const file=event.target.files&&event.target.files[0];if(!file)return;if(!file.type.startsWith("image/")){preview.textContent="اختَر ملف صورة صالحاً.";return;}const img=document.createElement("img");img.alt="معاينة صورة الحل";img.style.maxWidth="100%";img.style.maxHeight="320px";img.style.borderRadius="14px";img.src=URL.createObjectURL(file);preview.appendChild(img);});
+updateProgress();
+
+let ytPlayer=null;
+let currentVideoId=null;
+let currentPlaybackRate=1;
+const courseInfo={
+ math:{name:"الرياضيات",teacher:"حيدر عبد الأئمة",chapters:{1:[
+  {title:"المحاضرة 1 · الأعداد المركبة",id:"UV50VtY4KL8"},
+  {title:"المحاضرة 4 · العمليات الحسابية على الأعداد المركبة",id:"wMveA0Hz09s"},
+  {title:"المحاضرة 5 · خواص مرافق العدد المركب",id:"skHgJ5suQ48"},
+  {title:"المحاضرة 7 · أسئلة وزارية: أثبت أن",id:"SLC0VqsJAR8"},
+  {title:"المحاضرة 8 · إيجاد قيم x و y الحقيقية",id:"ReXO1u2rDCE"},
+  {title:"المحاضرة 9 · إيجاد قيم x و y الحقيقية ج2",id:"9zU1wYHUn7c"},
+  {title:"المحاضرة 10 · إيجاد قيم x و y الحقيقية ج3",id:"Nf8Zj60Wol4"},
+  {title:"المحاضرة 17 · تكوين المعادلة التربيعية ج1",id:"UJX2RjrV_pk"},
+  {title:"المحاضرة 18 · تكوين المعادلة التربيعية ج2",id:"6yY72uP9CNw"},
+  {title:"المحاضرة 19 · تكوين المعادلة التربيعية ج3",id:"Sy869Nv9BQo"},
+  {title:"المحاضرة 20 · شكل أرجاند",id:"HjX2xYrUyj4"}
+ ]}},
+ biology:{name:"الأحياء",teacher:"حسن فلاح",chapters:{1:[
+  {title:"الدرس الأول 2027 · مقدمة الفصل الأول والخلية والنظرية الخلوية",id:"g7gqE5VvEUA"},
+  {title:"الدرس الأول · الخلية والنظرية الخلوية (2025، تحقق من المطابقة)",id:"XyJMdQPAHog"}
+ ]}},
+ english:{name:"اللغة الإنكليزية",teacher:"محمد العبيدي",chapters:{1:[
+  {title:"Unit 1 · ختامية الإنشاء الجزء الثاني (منهج 2024، للمراجعة)",id:"u7e0-k1Ke6k"},
+  {title:"Unit 1 · قسم الإنشاء والحفظ",id:"eDau5Uh0WME"}
+ ],2:[
+  {title:"Unit 2 · الحلقة الأولى (منهج 2024، للمراجعة)",id:"Q0-U9opz5UE"},
+  {title:"Unit 2 · الحلقة الثانية (منهج 2024، للمراجعة)",id:"TUGefKRGNZU"},
+  {title:"Unit 2 · محتويات الوحدة",id:"1qJRG55oORk"}
+ ]}},
+ physics:{name:"الفيزياء",teacher:"حسين محمد",chapters:{1:[
+  {title:"قائمة تشغيل الفصل الأول · تصوير 2026/2027",playlistId:"PLTGUP-aD9V7Tv_4WwqNesSdYMm_eURn1s"},
+  {title:"المحاضرة 6 · المتسعات: أساسيات وقوانين العازل · تصوير 2027",id:"qogApYbpVTA"}
+ ],2:[{title:"قائمة تشغيل الفصل الثاني · تصوير 2026",playlistId:"PLTGUP-aD9V7QYkv11sqbbvYfnOJvyBjS3"}],
+ 3:[{title:"قائمة تشغيل الفصل الثالث · تصوير 2026",playlistId:"PLTGUP-aD9V7SiyJiHocIoCmj-uWehLEBr"}],
+ 4:[
+  {title:"الفصل الرابع · الموجات الكهرومغناطيسية وحقائق ماكسويل · محاضرة 1",id:"0SlL_ZTgV3o"},
+  {title:"الفصل الرابع · توليد الموجات الكهرومغناطيسية · محاضرة 2",id:"3bpgg_2tLl4"},
+  {title:"الفصل الرابع · جهازي الإرسال والتسلّم · محاضرة 3",id:"EzN5A77KQHw"},
+  {title:"الفصل الرابع · عمل دائرة الإرسال والتسلّم · محاضرة 4",id:"E3YWHWGWYJ0"},
+  {title:"الفصل الرابع · الكشف عن الموجات الكهرومغناطيسية · محاضرة 5",id:"q-MMzXt7LDo"}
+ ]}},
+ chemistry:{name:"الكيمياء",teacher:"نور الدين الدليمي",chapters:{
+  1:[
+   {title:"الفصل الأول · محاضرة 6 · السادس العلمي 2027",id:"qDhvQGUr360"},
+   {title:"الفصل الأول · مراجعة مركزة شاملة للفصل",id:"uuZrzSGLPC0"}
+  ],
+  2:[{title:"الفصل الثاني · مراجعة مركزة شاملة للفصل",id:"dkcU6K-X0VY"}],
+  3:[
+   {title:"الفصل الثالث · محاضرة 1 إلكتروني تجريبي 2027",id:"VZxN7MEa4eQ"},
+   {title:"الفصل الثالث · مراجعة مركزة ج1",id:"Io03NA-61jU"},
+   {title:"الفصل الثالث · مراجعة مركزة ج2",id:"v8OdeNHylq4"},
+   {title:"الفصل الثالث · محاضرة 15 · السادس العلمي 2027",id:"xefYS8tN9F8"}
+  ],
+  4:[{title:"الفصل الرابع · الكهربائية · مراجعة مركزة",id:"dpeQREEfoGU"}],
+  5:[{title:"الفصل الخامس · التناسقية · مراجعة مركزة",id:"Cz6Isp9MPA8"}],
+  6:[{title:"الفصل السادس · التحليلية · مراجعة مركزة",id:"wHzIZ9VcVaE"}],
+  7:[
+   {title:"الفصل السابع · العضوية · مراجعة مركزة ج1",id:"ZS4hKRD2V68"},
+   {title:"الفصل السابع · العضوية · مراجعة مركزة ج2",id:"X_eDB94GyH8"}
+  ],
+  8:[{title:"الفصل الثامن · الحياتية · مراجعة مركزة",id:"sNosQ3uxo1k"}]
+ }},
+ arabic:{name:"اللغة العربية",teacher:"هاشم المعموري",chapters:{1:[]}},
+ islamic:{name:"التربية الإسلامية",teacher:"مراجعة ذاتية",chapters:{1:[],2:[]}}
+};
+const chapterLabels={1:"الفصل الأول",2:"الفصل الثاني",3:"الفصل الثالث",4:"الفصل الرابع",5:"الفصل الخامس",6:"الفصل السادس",7:"الفصل السابع",8:"الفصل الثامن"};
+function openCourseChapter(course,chapter){
+ const info=courseInfo[course]||{name:course,teacher:"",chapters:{}};
+ previousCourseSection=course;
+ const title=document.getElementById("courseLibraryTitle");
+ const note=document.getElementById("courseLibraryNote");
+ const list=document.getElementById("courseLessonList");
+ title.textContent=info.name+" · "+(chapterLabels[chapter]||("الفصل "+chapter));
+ list.innerHTML="";
+ const key=`intisab_playlist_${course}_${chapter}`;
+ let saved="";try{saved=localStorage.getItem(key)||"";}catch(e){}
+ note.textContent="ألصق رابط قائمة تشغيل هذا الفصل مرة واحدة. ينحفظ الرابط على هذا الجهاز، وتكدر ترجعله بأي وقت.";
+ const setup=document.createElement("div");setup.className="simple-card";
+ const heading=document.createElement("h3");heading.textContent="🔗 قائمة تشغيل المدرّس";
+ const desc=document.createElement("p");desc.textContent="انسخ رابط Playlist من يوتيوب لهذا الفصل، مو رابط فيديو منفرد. الرابط ينحفظ بهذا الجهاز فقط.";
+ const input=document.createElement("input");input.type="url";input.id=`link_${course}_${chapter}`;input.placeholder="https://www.youtube.com/playlist?list=...";input.value=saved?`https://www.youtube.com/playlist?list=${saved}`:"";input.style.cssText="width:100%;box-sizing:border-box;padding:13px;border-radius:12px;border:1px solid #64748b;background:var(--card-bg,#fff);color:inherit;margin:8px 0;direction:ltr";
+ const saveBtn=document.createElement("button");saveBtn.className="subject-action";saveBtn.textContent=saved?"💾 تحديث / حفظ القائمة":"💾 حفظ قائمة التشغيل";saveBtn.style.margin="6px 0";saveBtn.onclick=()=>{const raw=input.value.trim();const id=raw?extractYouTubePlaylistId(raw):null;if(!id){alert("الرابط مو قائمة تشغيل يوتيوب صحيحة. لازم يحتوي على list=");return;}try{localStorage.setItem(key,id);}catch(e){alert("المتصفح منع الحفظ. جرّب فتح الملف من متصفح يسمح بالتخزين.");return;}saved=id;saveBtn.textContent="💾 تحديث / حفظ القائمة";renderSaved();alert("انحفظت قائمة هذا الفصل على جهازك.");};
+ const clearBtn=document.createElement("button");clearBtn.className="subject-action";clearBtn.textContent="🗑️ حذف القائمة المحفوظة";clearBtn.style.margin="6px";clearBtn.onclick=()=>{try{localStorage.removeItem(key);}catch(e){}saved="";input.value="";renderSaved();saveBtn.textContent="💾 حفظ قائمة التشغيل";};
+ setup.append(heading,desc,input,saveBtn,clearBtn);list.appendChild(setup);
+ const savedArea=document.createElement("div");list.appendChild(savedArea);
+ function renderSaved(){savedArea.innerHTML="";if(saved){const row=document.createElement("div");row.className="lesson-row";const meta=document.createElement("div");meta.className="lesson-meta";const strong=document.createElement("strong");strong.textContent="قائمة محاضرات الفصل المحفوظة";const small=document.createElement("small");small.textContent=info.teacher+" · قائمة يوتيوب كاملة";meta.append(strong,small);const btn=document.createElement("button");btn.textContent="عرض المحاضرات";btn.onclick=()=>openPlaylist(saved,info.name+" · "+(chapterLabels[chapter]||("الفصل "+chapter)),info.teacher,course);row.append(meta,btn);savedArea.appendChild(row);}}
+ renderSaved();
+ const lessons=(info.chapters&&info.chapters[chapter])||[];
+ if(lessons.length){const sub=document.createElement("p");sub.className="player-note";sub.textContent="روابط فردية موجودة مسبقاً (قد لا تكون كاملة). قائمة التشغيل التي تحفظها أعلاه تظهر بشكل منفصل.";list.appendChild(sub);lessons.forEach((lesson,index)=>{const row=document.createElement("div");row.className="lesson-row";const icon=document.createElement("div");icon.className="lesson-icon";icon.textContent="▶️";const meta=document.createElement("div");meta.className="lesson-meta";const strong=document.createElement("strong");strong.textContent=lesson.title;const small=document.createElement("small");small.textContent="رابط موجود · تشغيل داخل التطبيق";meta.append(strong,small);const btn=document.createElement("button");btn.textContent="تشغيل";btn.onclick=()=>lesson.playlistId?openPlaylist(lesson.playlistId,lesson.title,info.teacher,course):openLecture(lesson.id,lesson.title,info.teacher,course);row.append(icon,meta,btn);list.appendChild(row);});}
+ openSection("courseLibrary");
+}
+function openLecture(videoId,title,teacher="حيدر عبد الأئمة",course="math"){
+ currentVideoId=videoId;
+ previousCourseSection=course;
+ const teacherEl=document.getElementById("playerTeacher");if(teacherEl)teacherEl.textContent=teacher;
+ const titleEl=document.getElementById("playerLectureTitle");
+ if(titleEl)titleEl.textContent=title||"محاضرة رياضيات";
+ const holder=document.getElementById("youtubePlayer");
+ if(holder){
+  holder.innerHTML='<iframe id="lectureFrame" title="مشغل المحاضرة" src="https://www.youtube-nocookie.com/embed/'+encodeURIComponent(videoId)+'?autoplay=1&controls=1&rel=0&playsinline=1&enablejsapi=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
+ }
+ ytPlayer=null;
+ document.getElementById("playPauseButton").textContent="⏸ إيقاف مؤقت";
+ document.getElementById("speedMenu").classList.add("hidden");
+ document.getElementById("helpPanel").classList.add("hidden");
+ document.getElementById("helpAnswer").classList.add("hidden");
+ openSection("player");
+}
+function extractYouTubeId(raw){
+ try{
+  const u=new URL(raw.trim());
+  if(u.hostname.includes("youtu.be"))return u.pathname.split("/").filter(Boolean)[0]||null;
+  if(u.hostname.includes("youtube.com")||u.hostname.includes("youtube-nocookie.com")){
+   if(u.searchParams.get("v"))return u.searchParams.get("v");
+   const parts=u.pathname.split("/").filter(Boolean);
+   const i=parts.findIndex(x=>["embed","shorts","live"].includes(x));
+   if(i>=0&&parts[i+1])return parts[i+1];
+  }
+ }catch(e){}
+ return null;
+}
+function extractYouTubePlaylistId(raw){
+ try{
+  const u=new URL(raw.trim());
+  if(!(u.hostname.includes("youtube.com")||u.hostname.includes("youtu.be")||u.hostname.includes("youtube-nocookie.com")))return null;
+  const id=u.searchParams.get("list");
+  return id&&/^[A-Za-z0-9_-]+$/.test(id)?id:null;
+ }catch(e){return null;}
+}
+function openPlaylist(playlistId,title,teacher="حيدر عبد الأئمة",course="math"){
+ previousCourseSection=course;
+ const teacherEl=document.getElementById("playerTeacher");if(teacherEl)teacherEl.textContent=teacher;
+ const titleEl=document.getElementById("playerLectureTitle");if(titleEl)titleEl.textContent=title||"قائمة محاضرات الفصل";
+ const holder=document.getElementById("youtubePlayer");
+ if(holder){holder.innerHTML='<iframe id="lectureFrame" title="قائمة محاضرات الفصل" src="https://www.youtube-nocookie.com/embed/videoseries?list='+encodeURIComponent(playlistId)+'&autoplay=1&controls=1&rel=0&playsinline=1&enablejsapi=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';}
+ currentVideoId=null;ytPlayer=null;
+ document.getElementById("playPauseButton").textContent="⏸ إيقاف مؤقت";
+ document.getElementById("speedMenu").classList.add("hidden");
+ document.getElementById("helpPanel").classList.add("hidden");
+ document.getElementById("helpAnswer").classList.add("hidden");
+ openSection("player");
+}
+function playPastedLecture(course,chapter,title,teacher){
+ const input=document.getElementById(`link_${course}_${chapter}`);
+ const key=`intisab_playlist_${course}_${chapter}`;
+ const raw=input?input.value.trim():"";
+ let playlistId=raw?extractYouTubePlaylistId(raw):null;
+ if(raw&&!playlistId){alert("هذا مو رابط قائمة تشغيل يوتيوب. انسخ رابط الـ Playlist اللي يحتوي على list=، مو رابط فيديو منفرد أو نتائج البحث.");return;}
+ if(playlistId){try{localStorage.setItem(key,playlistId);}catch(e){}}
+ if(!playlistId){try{playlistId=localStorage.getItem(key);}catch(e){playlistId=null;}}
+ if(!playlistId){alert("ألصق رابط قائمة تشغيل الفصل أول مرة واضغط الزر. بعدها ينحفظ الرابط بهذا الجهاز.");return;}
+ openPlaylist(playlistId,title+" · قائمة تشغيل الفصل",teacher,course);
+}
+function sendYouTubeCommand(func,args=[]){
+ const frame=document.getElementById("lectureFrame");
+ if(!frame||!frame.contentWindow)return;
+ frame.contentWindow.postMessage(JSON.stringify({event:"command",func:func,args:args}),"*");
+}
+function toggleLecturePlayback(){
+ const btn=document.getElementById("playPauseButton");
+ if(btn.textContent.includes("إيقاف")){
+  sendYouTubeCommand("pauseVideo");btn.textContent="▶️ متابعة";
+ }else{
+  sendYouTubeCommand("playVideo");btn.textContent="⏸ إيقاف مؤقت";
+ }
+}
+function seekLecture(seconds){sendYouTubeCommand("seekTo",[seconds,true]);}
+function toggleSpeedMenu(){document.getElementById("speedMenu").classList.toggle("hidden");}
+function setLectureSpeed(rate){
+ currentPlaybackRate=rate;sendYouTubeCommand("setPlaybackRate",[rate]);
+ document.getElementById("speedMenu").classList.add("hidden");
+ document.getElementById("playPauseButton").textContent="⏸ إيقاف مؤقت";
+}
+function toggleHelpPanel(){document.getElementById("helpPanel").classList.toggle("hidden");}
+function askStudyHelp(){
+ const q=document.getElementById("helpQuestion").value.trim();
+ const box=document.getElementById("helpAnswer");
+ if(!q){box.textContent="اكتب السؤال أو الخطوة اللي ما فهمتها أولاً.";box.classList.remove("hidden");return;}
+ box.textContent=`وصلت فكرتك: «${q}».
+
+حتى أشرح لك القانون أو سبب الخطوة شرحاً دقيقاً، لازم نربط هذا الجزء بخدمة ذكاء اصطناعي حقيقية. حالياً هذه الواجهة تجريبية ولا ترسل سؤالك إلى AI. بالمرحلة التالية نربطها بخدمة آمنة، ونضيف إمكانية تحديد وقت المحاضرة وكتابة السؤال مع اسم الفصل.`;
+ box.classList.remove("hidden");
+}
+</script>
+<script>
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(() => {}));
+}
+</script>
+</body>
+</html>
